@@ -4,11 +4,15 @@ import { InjectModel } from 'nestjs-typegoose';
 import { CreateReviewDto } from './dto/create-review.dto';
 import { ReviewModel } from './review.model';
 
+class Leak {}
+
+const leaks = [];
+
 @Injectable()
 export class ReviewService {
   constructor(
     @InjectModel(ReviewModel)
-    private readonly reviewModel: ModelType<ReviewModel>,
+    private readonly reviewModel: any, //ModelType<ReviewModel> Тип any для Jest
   ) {}
 
   async create(dto: CreateReviewDto): Promise<DocumentType<ReviewModel>> {
@@ -22,7 +26,8 @@ export class ReviewService {
   async findByProductId(
     productId: string,
   ): Promise<DocumentType<ReviewModel>[]> {
-    return this.reviewModel.find({ productId }).exec();
+    leaks.push(new Leak());
+    return await this.reviewModel.find({ productId }).exec();
   }
 
   async deleteByProductId(productId: string) {

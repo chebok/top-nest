@@ -1,19 +1,13 @@
 name: Publish Docker
-
-on:
-  push:
-    branches: [master]
-
+on: [push]
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@master
-      - name: Publish to registy
-        uses: elgohr/Publish-Docker-Github-Action@master
-        with:
-          registry: docker.pkg.github.com
-          name: docker.pkg.github.com/AlariCode/top-api/top-api
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
-          tags: "develop"
+    - uses: actions/checkout@master
+    - name: Publish to Registry
+      uses: minddocdev/docker-publish-action@master
+      with:
+        name: 4ebok/mydocker
+        username: ${{ secrets.DOCKER_USERNAME }}
+        password: ${{ secrets.DOCKER_PASSWORD }}
